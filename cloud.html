@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cloud Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="./cloud-style.css">
+</head>
+<body>
+
+<div class="container">
+
+<header>
+   <h1>CloudDB Log Page</h1>
+</header>
+
+<!-- Navigation Bar -->
+<div class="bar">
+  <a href="http://ai2.appinventor.mit.edu/" class="bar-item">App Inventor</a>
+  <a href="index.html" class="bar-item">Log View</a>
+  <a href="cloud.html" class="bar-item">Cloud View</a>
+</div>
+<p id="lastUpdated"></p>
+    <script type="text/javascript">
+        var logFiles = [];
+        var lastUpdated = 1508702040068;
+        var date = new Date();
+        date.setTime(lastUpdated);
+        document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date;
+        logFiles.sort(function (a, b) {
+            return b.created - a.created;
+        });
+        var logFilesTable = document.getElementById("logFilesTable");
+        for (var i = 0; i < logFiles.length; i++) {
+            var logFile = logFiles[i];
+            date.setTime(logFile.created);
+            var row = logFilesTable.insertRow(-1);
+            var computerNameCell = row.insertCell(0);
+            var pidCell = row.insertCell(1);
+            var typeCell = row.insertCell(2);
+            var dateCell = row.insertCell(3);
+            var logCell = row.insertCell(4);
+            computerNameCell.innerHTML = logFile.computername;
+            pidCell.innerHTML = logFile.pid.toString();
+            typeCell.innerHTML = logFile.type;
+            typeCell.setAttribute('class', logFile.type);
+            dateCell.innerHTML = date.toString();
+            logCell.innerHTML = '<a href="' + logFile.file + '">log</a>';
+        };
+    </script>
+
+</div>
+
+</body>
+</html>
