@@ -32,7 +32,7 @@
             row.insertCell(1).outerHTML = "<th>Value</th>";
             row.insertCell(2).outerHTML = "<th>Type</th>";
             row.insertCell(3).outerHTML = "<th>Last Accessed</th>";
-            row.insertCell(4).outerHTML = "<th>Random</th>"
+            row.insertCell(4).outerHTML = "<th>Random</th>";
         newDiv.appendChild(table);
         document.getElementById("container").appendChild(newDiv);
         seen.add(currentid);}

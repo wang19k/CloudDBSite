@@ -30,9 +30,9 @@ def get_project_data():
 
 @app.route('/')
 
-@app.route('/test')
+@app.route('/index')
 def timeline():
-    return render_template('test.html',
+    return render_template('index.html',
                             project_data=get_project_data())
 
 if __name__ == '__main__':
