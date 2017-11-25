@@ -1,0 +1,39 @@
+!DOCTYPE html>
+<html>
+<head>
+    <title>CloudDB Log</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../static/cloud-style.css">
+</head>
+<body>
+<header>
+   <h1>CloudDB Log Page</h1>
+</header>
+<!-- Navigation Bar -->
+<div class="bar">
+  <a href="http://ai2.appinventor.mit.edu/" class="bar-item">App Inventor</a>
+  <a href="index.html" class="bar-item">Log View</a>
+  <a href="cloud.html" class="bar-item">Cloud View</a>
+</div>
+<!-- TODO deal with the aesthetics -->
+<p id="lastUpdated"></p>
+      <table border = 1>
+      	<tr>
+      		<th> ID </th>
+      		<th> Tag </th>
+      		<th> Value </th>
+      		<th> Updated </th>
+      		<th> Type </th>
+         {% for pd in project_data %}
+         
+            <tr>
+               <td> {{ pd.projectid }} </td>
+               <td> {{ pd.tag}} </td>
+               <td> {{ pd.value }} </td>
+               <td> {{ pd.updated }} </td>
+               <td> {{ pd.type }} </td>
+            </tr>
+         {% endfor %}
+      </table>
+</body>
