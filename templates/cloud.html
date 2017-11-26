@@ -11,6 +11,7 @@ a { text-decoration: none; font-size: 125%; padding-right: 1em; padding-left: 2e
 * {
     box-sizing: border-box;
 }
+h2 {font-family: "Trebuchet MS" , Arial, Helvetica, sans-serif; font-size: 110%;}
 
 body {
     background-color: white;
@@ -35,8 +36,6 @@ body {
     left: 50%;
     margin-left: -3px;
 }
-
-/* Container around content */
 .container {
     padding: 10px 40px;
     position: relative;
@@ -44,7 +43,7 @@ body {
     width: 50%;
 }
 
-/* The circles on the timeline */
+/* Timeline circles */
 .container::after {
     content: '';
     position: absolute;
@@ -167,15 +166,16 @@ body {
 <p id="lastUpdated"></p>
     <script type="text/javascript">
         var isLeft = true;
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
         var logFiles = [{"projectid":"Natalie@","tag":"High Score","value":12,"type":"Integer","updated":1489149847877}, 
         {"projectid":"Natalie@","tag":"High Score","value":10,"type":"Integer","updated":1489143847222}, {"projectid":"Katherine@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}, {"projectid":"Jeff@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}];
         var timeline = document.getElementById("timeline");
         var date = new Date();
-        document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date;
+        document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date.toLocaleString("en-US", options);
         logFiles.sort(function (a, b) {
             return b.created - a.created;
         });
-        var date = new Date();
+        var date2 = new Date();
         for (var i = 0; i < logFiles.length; i++) {
             var logFile = logFiles[i];
             var newDiv = document.createElement("div");
@@ -185,8 +185,8 @@ body {
                 content.setAttribute('class', 'content');
                 var p = document.createElement('p');
                 var header = document.createElement("h2");
-                date.setTime(logFile.updated);
-                header.innerHTML = date.toString();
+                date2.setTime(logFile.updated);
+                header.innerHTML = date2.toLocaleString("en-US", options);
                 p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
                 content.appendChild(header);
                 content.appendChild(p);

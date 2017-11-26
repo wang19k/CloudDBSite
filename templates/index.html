@@ -67,7 +67,8 @@
         seen.add(currentid);}
     }
     var date = new Date();
-    document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date;
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
+    document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date.toLocaleString("en-US", options);
     // Most recent to least recent
     logFiles.sort(function (a, b) {
         return b.updated - a.updated;
@@ -87,7 +88,7 @@
         typeColumn.innerHTML = "Integer"; //logFile.type;
         typeColumn.setAttribute('class', "Integer"); //logFile.type);
         var dateColumn = row.insertCell(3);
-        dateColumn.innerHTML = date.toString();
+        dateColumn.innerHTML = date.toLocaleString("en-US", options);
         var randomCell = row.insertCell(4);
         randomCell.innerHTML = "Random";
     }
