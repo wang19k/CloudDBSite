@@ -161,70 +161,56 @@ body {
 </div>
 
 
-<div class="timeline">
-  <div class="container left">
-    <div class="content">
-      <h2>Time</h2>
-      <p>Data</p>
-    </div>
-  </div>
-  <div class="container right">
-    <div class="content">
-      <h2>Time</h2>
-      <p>Data</p>
-    </div>
-  </div>
-  <div class="container left">
-    <div class="content">
-      <h2>Time</h2>
-      <p>Data</p>
-    </div>
-  </div>
-  <div class="container right">
-    <div class="content">
-      <h2>Time</h2>
-      <p>Data</p>
-    </div>
-  </div>
-  <div class="container left">
-    <div class="content">
-      <h2>Time</h2>
-      <p>Data</p>
-    </div>
-  </div>
-  <div class="container right">
-    <div class="content">
-      <h2>Time</h2>
-      <p>Data</p>
-    </div>
-  </div>
+<div id = "timeline" class="timeline">
 </div>
 
 <p id="lastUpdated"></p>
     <script type="text/javascript">
+        var isLeft = true;
         var logFiles = [{"projectid":"Natalie@","tag":"High Score","value":12,"type":"Integer","updated":1489149847877}, 
         {"projectid":"Natalie@","tag":"High Score","value":10,"type":"Integer","updated":1489143847222}, {"projectid":"Katherine@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}, {"projectid":"Jeff@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}];
+        var timeline = document.getElementById("timeline");
         var date = new Date();
         document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date;
         logFiles.sort(function (a, b) {
             return b.created - a.created;
         });
-        var logFilesTable = document.getElementById("logFilesTable");
+        var date = new Date();
         for (var i = 0; i < logFiles.length; i++) {
             var logFile = logFiles[i];
-            date.setTime(logFile.created);
-            var row = logFilesTable.insertRow(-1);
-            var computerNameCell = row.insertCell(0);
-            var pidCell = row.insertCell(1);
-            var typeCell = row.insertCell(2);
-            var dateCell = row.insertCell(3);
-            var logCell = row.insertCell(4);
-            computerNameCell.innerHTML = logFile.computername;
-            pidCell.innerHTML = logFile.pid.toString();
-            typeCell.innerHTML = logFile.type;
-            typeCell.setAttribute('class', logFile.type);
-            dateCell.innerHTML = date.toString();
-            logCell.innerHTML = '<a href="' + logFile.file + '">log</a>';
+            var newDiv = document.createElement("div");
+            if (isLeft == true){
+                newDiv.setAttribute('class', 'container left');
+                content = document.createElement("div");
+                content.setAttribute('class', 'content');
+                var p = document.createElement('p');
+                var header = document.createElement("h2");
+                date.setTime(logFile.updated);
+                header.innerHTML = date.toString();
+                p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
+                content.appendChild(header);
+                content.appendChild(p);
+                newDiv.appendChild(content);
+                isLeft = false;
+            }
+            else{
+                newDiv.setAttribute('class', 'container right');
+                content = document.createElement("div");
+                content.setAttribute('class', 'content');
+                content = document.createElement("div");
+                content.setAttribute('class', 'content');
+                var p = document.createElement('p');
+                var header = document.createElement("h2");
+                date.setTime(logFile.updated);
+                header.innerHTML = date.toString();
+                p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
+                content.appendChild(header);
+                content.appendChild(p);
+                newDiv.appendChild(content);
+                isLeft = true;
+            }
+            //newDiv.outerHTML = logFiles.projectid.toString() + logFiles.updated.toString();
+            timeline.appendChild(newDiv);
         };
     </script>
 
