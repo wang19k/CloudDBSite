@@ -17,15 +17,16 @@ def get_project_data():
     keys = r.keys('*')
     html_posts = []
     for key in keys:
+        name, tag = key.split("High")
+        tag = "High " + tag
     	posts = r.zrange(key, 0, -1, withscores=True)
     	for i in range(len(posts)):
-    		postd = {"projectid": key, 
-    		"tag": "High Score", 
+    		postd = {"projectid": name, 
+    		"tag": tag, 
     		"value": posts[i][0], 
     		"updated": posts[i][1],
     		"type": "Integer"}
     		html_posts.append(postd)
-    #print(html_posts)
     return html_posts
 
 @app.route('/')
