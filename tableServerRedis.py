@@ -36,5 +36,10 @@ def timeline():
     return render_template('index.html',
                             project_data=get_project_data())
 
+@app.route('/cloud')
+def cloud():
+    return render_template('cloud.html',
+                            project_data=get_project_data())
+
 if __name__ == '__main__':
    app.run(debug=True)

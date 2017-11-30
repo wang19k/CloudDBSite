@@ -6,16 +6,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--<link rel="stylesheet" href="../static/cloud-style.css">-->
 <style>
-header { padding: 1em; color: white; background-color: green; clear: left; text-align: center;}
-a { text-decoration: none; font-size: 125%; padding-right: 1em; padding-left: 2em; color: #000000;} 
+header { padding: 1em; color: black; background-color: #A4CE47; clear: left; text-align: center;}
+a { text-decoration: none; font-size: 125%; padding-right: 2em; padding-left: 2em; color: #000000;} 
+.bar {
+    border: 1px solid gray;
+    text-align: center;
+}
 * {
     box-sizing: border-box;
 }
-h2 {font-family: "Trebuchet MS" , Arial, Helvetica, sans-serif; font-size: 110%;}
+hr{border:0;border-top:1px solid #eee;margin:20px 0}
+
+h2 {font-family: "Roboto"; font-size: 110%;}
 
 body {
     background-color: white;
-    font-family: Helvetica, sans-serif;
+    font-family: "Roboto";
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -36,6 +42,7 @@ body {
     left: 50%;
     margin-left: -3px;
 }
+/*Content*/
 .container {
     padding: 10px 40px;
     position: relative;
@@ -50,8 +57,8 @@ body {
     width: 25px;
     height: 25px;
     right: -17px;
-    background-color: white;
-    border: 4px solid #FF9F55;
+    background:url('../static/app_inventor.png') no-repeat center #FFF;
+    border: 4px solid #F78D35;
     top: 15px;
     border-radius: 50%;
     z-index: 1;
@@ -103,12 +110,11 @@ body {
 /* The actual content */
 .content {
     padding: 20px 30px;
-    background-color: green;
+    background-color: #A4CE47;
     position: relative;
     border-radius: 6px;
 }
 
-/* Media queries - Responsive timeline on screens less than 600px wide */
 @media all and (max-width: 600px) {
   /* Place the timelime to the left */
   .timeline::after {
@@ -118,7 +124,7 @@ body {
   /* Full-width containers */
   .container {
     width: 100%;
-    padding-left: 70px;
+    padding-left: 25px;
     padding-right: 25px;
   }
   
@@ -140,6 +146,23 @@ body {
     left: 0%;
   }
 }
+  .timeline-start,
+  .timeline-end {
+  display: table;
+  font-family: "Roboto";
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: #A4CE47;
+  padding: 15px 15px;
+  color: #000;
+  max-width: 10%;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  border-radius: 6px;
+}
+
 </style>
 </head>
 <body>
@@ -155,26 +178,34 @@ body {
 <!-- Navigation Bar -->
 <div class="bar">
   <a href="http://ai2.appinventor.mit.edu/" class="bar-item">App Inventor</a>
-  <a href="index.html" class="bar-item">Log View</a>
-  <a href="cloud.html" class="bar-item">Cloud View</a>
+  <a href="index" class="bar-item">Log View</a>
+  <a href="cloud" class="bar-item">Cloud View</a>
 </div>
 
-
+<div id = "tstart" class="timeline-start">Start</div>
 <div id = "timeline" class="timeline">
 </div>
+<div id = "tend" class="timeline-end">End</div>
 
 <p id="lastUpdated"></p>
     <script type="text/javascript">
         var isLeft = true;
         var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
-        var logFiles = [{"projectid":"Natalie@","tag":"High Score","value":12,"type":"Integer","updated":1489149847877}, 
-        {"projectid":"Natalie@","tag":"High Score","value":10,"type":"Integer","updated":1489143847222}, {"projectid":"Katherine@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}, {"projectid":"Jeff@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}];
+        var options2 = {month: 'short', day: 'numeric', hour: 'numeric'}
+        /*var logFiles = [{"projectid":"Natalie@","tag":"High Score","value":12,"type":"Integer","updated":1489149847877}, 
+        {"projectid":"Natalie@","tag":"High Score","value":10,"type":"Integer","updated":1489143847222}, {"projectid":"Katherine@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}, {"projectid":"Jeff@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}];*/
+        var logFiles = {{ project_data | tojson }};
         var timeline = document.getElementById("timeline");
         var date = new Date();
         document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date.toLocaleString("en-US", options);
         logFiles.sort(function (a, b) {
-            return b.created - a.created;
+            return b.updated - a.updated;
         });
+        date.setTime(logFiles[0].updated);
+        document.getElementById('tstart').innerHTML = date.toLocaleString("en-US", options2);
+        date.setTime(logFiles[logFiles.length - 1].updated);
+        document.getElementById('tend').innerHTML = date.toLocaleString("en-US", options2);
+
         var date2 = new Date();
         for (var i = 0; i < logFiles.length; i++) {
             var logFile = logFiles[i];
@@ -201,8 +232,8 @@ body {
                 content.setAttribute('class', 'content');
                 var p = document.createElement('p');
                 var header = document.createElement("h2");
-                date.setTime(logFile.updated);
-                header.innerHTML = date.toString();
+                date2.setTime(logFile.updated);
+                header.innerHTML = date2.toLocaleString("en-US", options);
                 p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
                 content.appendChild(header);
                 content.appendChild(p);
