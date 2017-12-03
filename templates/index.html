@@ -5,10 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="../static/cloud-style.css">-->
-    <!--<meta http-equiv="refresh" content="60">-->
+    <!--<meta http-equiv="refresh" content="10">-->
     <style type="text/css">
     	html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 		html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}
+		.bar {
+	        border: 1px solid gray;
+	        text-align: center;
+	        background-color: #F2F2F2;
+    	}
 		article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}
 		button,input,select,textarea{font:inherit;margin:0}optgroup{font-weight:bold}
 		hr{border:0;border-top:1px solid #eee;margin:20px 0}
@@ -48,7 +53,7 @@
 
 <div class="container" id="container">
 <div id = "dynamic" class="tab">
-  <button class="tablinks" onclick="openCity(event, 'Default')" id="defaultOpen">Home</button>
+  <button class="tablinks" onclick="openIDTable(event, 'Default')" id="defaultOpen">Home</button>
 </div>
 
 <div id="Default" class="tabcontent">
