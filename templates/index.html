@@ -33,7 +33,7 @@
 		nav ul a {text-decoration: none;}
 		a { text-decoration: none; font-size: 125%; padding-right: 1em; padding-left: 2em; color: #000000;}       
 		article {margin-left: 170px; border-left: 1px solid gray; padding: 1em; overflow: hidden;}
-		body{font-family: "Roboto";}
+		body{ font-family: "Roboto";}
 		table { border-collapse: collapse; }
 		td, th { border: 1px solid lightgray; padding: 3px 7px 2px 7px;}
 		th{text-align: left; padding-top: 5px; padding-bottom: 4px; background-color: Gray; color: #ffffff;}
@@ -61,6 +61,7 @@
 </div>
 </div>
 <div id="lastUpdated"></div>
+<button id="refresh" onclick="refresh()">Reload Page</button>
 
 <script>
     function openIDTable(evt, projectIDName) {
@@ -78,6 +79,9 @@
     }
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
+    function refresh(){
+    	window.location.reload();
+    }
 </script>
 <!--<script type="text/javascript" src="../static/tableFormation.js"></script>-->
 <script type="text/javascript">
@@ -113,6 +117,12 @@
             row.insertCell(2).outerHTML = "<th>Type</th>";
             row.insertCell(3).outerHTML = "<th>Last Accessed</th>";
         newDiv.appendChild(table);
+        var refreshButton = document.createElement('button');
+    	refreshButton.setAttribute('onclick', "refreshBlock()");
+    	refreshButton.innerHTML = "Page location is " + window.location.href;
+    	function refreshBlock()
+    	{$('#' + currentid).load("/store #" + currentid);}
+    	newDiv.appendChild(refreshButton);
         document.getElementById("container").appendChild(newDiv);
         seen.add(currentid);}
     }

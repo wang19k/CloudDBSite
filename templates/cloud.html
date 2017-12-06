@@ -205,11 +205,76 @@
 </div>
 
 <div id = "tstart" class="timeline-start">Start</div>
-<div id = "timeline" class="timeline">
-</div>
+<div id = "timeline" class="timeline"></div>
 <div id = "tend" class="timeline-end">End</div>
 
+<button onclick="refresh()">Refresh</button>
+
+
+<!--<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+    socket.on('connect', function() {
+        socket.emit('connect', {data: 'I\'m connected!'});
+    });
+    socket.on('exchangeData', function(msg) {
+        location.reload();
+    });
+</script>-->
+<pre id="out"></pre>
+
 <p id="lastUpdated"></p>
+    <script type="text/javascript">
+        var source = new EventSource('/stream');
+        /*source.addEventListener('refresh', function(e) {
+            //$("#refresh").prepend(event.data + "<br>");
+            window.location.reload(true);
+        if (e.data == 'stream_end') { source.close() };
+        });*/
+        var timeline = document.getElementById("timeline");
+        source.onmessage = function(e) {
+            window.location.reload(true);
+            /*if (e.data != "1"){
+
+            //var byteString = JSON.parse(e.data);
+            var newDiv = document.createElement("div");
+            if (timeline.lastChild.className == 'container right'){
+                newDiv.setAttribute('class', 'container left');
+                content = document.createElement("div");
+                content.setAttribute('class', 'content');
+                var p = document.createElement('p');
+                var header = document.createElement("h2");
+                //date2.setTime(logFile.updated);
+                //header.innerHTML = date2.toLocaleString("en-US", options);
+                //p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
+                header.innerHTML = timeline.lastChild.className;
+                p.innerHTML = e.data;
+                content.appendChild(header);
+                content.appendChild(p);
+                newDiv.appendChild(content);
+            }
+            else{
+                newDiv.setAttribute('class', 'container right');
+                content = document.createElement("div");
+                content.setAttribute('class', 'content');
+                var p = document.createElement('p');
+                var header = document.createElement("h2");
+                //date2.setTime(logFile.updated);
+                //header.innerHTML = date2.toLocaleString("en-US", options);
+                //p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
+                p.innerHTML = e.data;
+                header.innerHTML = timeline.lastChild.className;
+                content.appendChild(header);
+                content.appendChild(p);
+                newDiv.appendChild(content);
+            }
+            timeline.appendChild(newDiv);
+            }
+            //out.innerHTML =  e.data + out.innerHTML;
+            /*if (byteString === "refresh"){
+            window.location.reload();}*/
+            };
+    </script>
     <script type="text/javascript">
         var isLeft = true;
         var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
@@ -248,8 +313,6 @@
             }
             else{
                 newDiv.setAttribute('class', 'container right');
-                content = document.createElement("div");
-                content.setAttribute('class', 'content');
                 content = document.createElement("div");
                 content.setAttribute('class', 'content');
                 var p = document.createElement('p');
