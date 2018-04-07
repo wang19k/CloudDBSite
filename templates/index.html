@@ -26,7 +26,7 @@
 		div.tab button:hover {background-color: #ddd;}
 		/* Active Tab*/
 		div.tab button.active {background-color: #ccc;}
-		.tabcontent {float: left; padding: 0px 12px; border: 1px solid #ccc; width: 80%; border-left: none; height: 600px;}
+		.tabcontent {float: left; padding: 0px 12px; width: 80%; border-left: none; height: 80vh;}
 		header { padding: 1em; color: black; background-color: #A4CE47; clear: left; text-align: center;}
 		nav { float: left; max-width: 200px; margin: 1; padding: 1em;}
 		nav ul { list-style-type: none; padding: 0; }
@@ -38,6 +38,11 @@
 		td, th { border: 1px solid lightgray; padding: 3px 7px 2px 7px;}
 		th{text-align: left; padding-top: 5px; padding-bottom: 4px; background-color: Gray; color: #ffffff;}
 		td.stderr {color: Red;}
+        #lastUpdated{
+            border:none;
+            font-size: 2vw;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -60,82 +65,96 @@
   <h3>Select a sidebar option to view your data!</h3>
 </div>
 </div>
-<div id="lastUpdated"></div>
-<button id="refresh" onclick="refresh()">Reload Page</button>
+<!--<div id="lastUpdated">Filler</div>-->
+<!--<button id="refresh" onclick="refresh()">Reload Page</button>-->
+<!--<script type="text/javascript" src="../static/tableFormation.js"></script>-->
 
 <script type="text/javascript">
+    var seen = new Set();
     var source = new EventSource('/stream');
-    source.onmessage = function(e) {
+    source.onmessage = function(evt) {
+        e = JSON.parse(evt.data);
+        //window.location.reload(true);
+        if (seen.has(e.projectid)){
+            var dataLogTable = document.getElementById("logTable" + e.projectid);
+            date.setTime(e.updated);
+            var row = dataLogTable.insertRow(-1);
+            var tagColumn = row.insertCell(0);
+            tagColumn.innerHTML = e.tag;
+            var valueColumn = row.insertCell(1);
+            valueColumn.innerHTML = e.value.toString();
+            var typeColumn = row.insertCell(2);
+            typeColumn.innerHTML = e.type;
+            var dateColumn = row.insertCell(3);
+            dateColumn.innerHTML = date.toLocaleString("en-US", options);
+        }
+        else{
         window.location.reload(true);
+        }
     };
-</script>
-
-<script>
     function openIDTable(evt, projectIDName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(projectIDName).style.display = "block";
+        evt.currentTarget.className += " active";
     }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(projectIDName).style.display = "block";
-    evt.currentTarget.className += " active";
-    }
+
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
     function refresh(){
     	window.location.reload(true);
     }
-</script>
-<!--<script type="text/javascript" src="../static/tableFormation.js"></script>-->
-<script type="text/javascript">
+
 	var logFiles = {{ project_data | tojson }};
 
 	/*var logFiles = [{"projectid":"Natalie@","tag":"High Score","value":12,"type":"Integer","updated":1489149847877}, 
     {"projectid":"Natalie@","tag":"High Score","value":10,"type":"Integer","updated":1489143847222}, {"projectid":"Katherine@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}, {"projectid":"Jeff@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}];*/
     var tabs = document.getElementById("dynamic");
-    var seen = new Set();
     // run through to set up and create all the tabs and tables
     for (var i = 0; i < logFiles.length; i++) {
         var logFile = logFiles[i];
         var currentid = logFile.projectid;
         if (!seen.has(currentid)){
-        var button = document.createElement('button');
-        button.setAttribute('class', 'tablinks');
-        button.setAttribute('onclick', "openIDTable(event, \'"+currentid+"\')");
-        button.innerHTML = currentid;
-        tabs.appendChild(button);
+            var button = document.createElement('button');
+            button.setAttribute('class', 'tablinks');
+            button.setAttribute('onclick', "openIDTable(event, \'"+currentid+"\')");
+            button.innerHTML = currentid;
+            tabs.appendChild(button);
 
-        var newDiv = document.createElement("div");
-        newDiv.id = currentid;
-        newDiv.setAttribute('class', 'tabcontent');
-        // This is so it doesn't show the table data by default
-        newDiv.setAttribute('style', "display: none;")
-        newDiv.innerHTML = "<h1 id=\"logHeader\" style=\"font-size:160%;\"><b>Log Table for ID: "+ currentid +"</b></h1>";
+            var newDiv = document.createElement("div");
+            newDiv.id = currentid;
+            newDiv.setAttribute('class', 'tabcontent');
+            // This is so it doesn't show the table data by default
+            newDiv.setAttribute('style', "display: none;")
+            newDiv.innerHTML = "<h1 id=\"logHeader\" style=\"font-size:160%;\"><b>Log Table for ID: "+ currentid +"</b></h1>";
 
-        var table = document.createElement("table");
-        table.id = "logTable" + currentid;
-        var row = table.insertRow(0);
-            row.insertCell(0).outerHTML = "<th>Tag</th>";
-            row.insertCell(1).outerHTML = "<th>Value</th>";
-            row.insertCell(2).outerHTML = "<th>Type</th>";
-            row.insertCell(3).outerHTML = "<th>Last Accessed</th>";
-        newDiv.appendChild(table);
-        //var refreshButton = document.createElement('button');
-    	//refreshButton.setAttribute('onclick', "refreshBlock()");
-    	//refreshButton.innerHTML = "Page location is " + window.location.href;
-    	//function refreshBlock()
-    	//{$('#' + currentid).load("/store #" + currentid);}
-    	//newDiv.appendChild(refreshButton);
-        document.getElementById("container").appendChild(newDiv);
-        seen.add(currentid);}
+            var table = document.createElement("table");
+            table.id = "logTable" + currentid;
+            var row = table.insertRow(0);
+                row.insertCell(0).outerHTML = "<th>Tag</th>";
+                row.insertCell(1).outerHTML = "<th>Value</th>";
+                row.insertCell(2).outerHTML = "<th>Type</th>";
+                row.insertCell(3).outerHTML = "<th>Last Accessed</th>";
+            newDiv.appendChild(table);
+            //var refreshButton = document.createElement('button');
+        	//refreshButton.setAttribute('onclick', "refreshBlock()");
+        	//refreshButton.innerHTML = "Page location is " + window.location.href;
+        	//function refreshBlock()
+        	//{$('#' + currentid).load("/store #" + currentid);}
+        	//newDiv.appendChild(refreshButton);
+            document.getElementById("container").appendChild(newDiv);
+            seen.add(currentid);}
     }
     var date = new Date();
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
-    document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date.toLocaleString("en-US", options);
+    //document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date.toLocaleString("en-US", options);
     // Most recent to least recent
     logFiles.sort(function (a, b) {
         return b.updated - a.updated;
@@ -152,8 +171,7 @@
         var valueColumn = row.insertCell(1);
         valueColumn.innerHTML = logFile.value.toString();
         var typeColumn = row.insertCell(2);
-        typeColumn.innerHTML = "Integer"; //logFile.type;
-        typeColumn.setAttribute('class', "Integer"); //logFile.type);
+        typeColumn.innerHTML = logFile.type;
         var dateColumn = row.insertCell(3);
         dateColumn.innerHTML = date.toLocaleString("en-US", options);
     }
