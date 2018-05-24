@@ -1,0 +1,178 @@
+:root {
+    --color-light-red: hsl(5, 54%, 84%);
+    --color-purple: hsl(241, 98%, 75%);
+    --color-dark-purple: hsl(250, 29%, 31%);
+    --color-green: hsl(79, 58%, 54%);
+    --color-light-green: hsl(86, 36%, 78%);
+}
+form{
+	align-self: center;
+	text-align: center;
+	margin-top: 10px;
+	font-size: 1.2em;
+}
+header { padding: 1em; color: black; background-color: var(--color-green); clear: left; text-align: center;}
+a { text-decoration: none; font-size: 125%; padding-right: 2em; padding-left: 2em; color: #808080;} 
+p{font-family: "Roboto"; font-size:90%;}
+.bar {
+    border: 1px solid gray;
+    text-align: center;
+    background-color: #F2F2F2;
+}
+.bar a:hover{
+  background-color: #ddd;
+}
+* {
+    box-sizing: border-box;
+}
+h1{font-family: "Roboto"; font-size: 180%; text-align: center;}
+.form-title {
+  font-family: "Roboto";
+  font-weight: bold;
+  font-size: 30px;
+  /*color: #403866;*/
+  color: #444;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+
+  width: 100%;
+  display: block;
+}
+.limiter {
+  width: 100%;
+  margin-top: -25vh;
+}
+.formContainer {
+  width: 100%;  
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+.wrapper {
+  width: 390px;
+  background: #fff;
+  border-radius: 10px;
+  position: relative;
+}
+.inputWrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  position: relative;
+  background-color: #e6e6e6;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+.typedInput {
+  font-family: "Roboto";
+  color: black;
+  line-height: 1.2;
+  font-size: 18px;
+
+  display: block;
+  width: 100%;
+  background: transparent;
+  height: 62px;
+  padding: 0 20px 0 38px;
+}
+.defaultCheck {
+  display: none;
+}
+.checkWrapper{
+	display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container {
+    display: block;
+    position: relative;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    flex-grow: 2;
+    font-family: "Roboto";
+    font-family: bold;
+  	font-size: 1em;
+  	color: #999999;
+  	cursor: pointer;
+  	line-height: 1.2;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+  	font-family: "Roboto";
+  	font-size: 13px;
+  	color: transparent;
+  	width: 25px;
+  	height: 25px;
+  	border-radius: 3px;
+  	background: #fff;
+  	border: 2px solid var(--color-green);
+}
+.container:hover .defaultCheck + .checkmark {
+    background-color: #ccc;
+}
+.container .checkmark:after {
+    left: 7px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* When the checkbox is checked, add a blue background */
+.defaultCheck:checked + .checkmark {
+    background-color: var(--color-light-green);
+}
+.defaultCheck:checked + .checkmark:after {
+    display: block;
+}
+.submitButton{
+	font-family: "Roboto";
+  font-size: 1.2em;
+  color: #666;
+  line-height: 1.2;
+  text-transform: uppercase;
+  padding: 0 20px;
+  width: 100%;
+  height: 50px;
+  background-color: var(--color-light-green);
+  border-radius: 3px;
+  margin-top: 10px;
+}
+.submitButton:hover {
+  background-color: var(--color-green);
+  color: #fff;
+}
+.typedInput:invalid{
+  background-color: var(--color-light-red);
+}

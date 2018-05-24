@@ -4,190 +4,11 @@
 <title>Cloud Page</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--<link rel="stylesheet" href="../static/cloud-style.css">-->
-<style>
-    header { padding: 1em; color: black; background-color: #A4CE47; clear: left; text-align: center;}
-    a { text-decoration: none; font-size: 125%; padding-right: 2em; padding-left: 2em; color: #808080;} 
-    p{font-family: "Roboto"; font-size:100%;}
-    .bar {
-        border: 1px solid gray;
-        text-align: center;
-        background-color: #F2F2F2;
-    }
-    * {
-        box-sizing: border-box;
-    }
-    hr{border:0;border-top:1px solid #eee;margin:20px 0}
-
-    h2 {font-family: "Roboto"; font-size: 110%;}
-
-    body {
-        background-color: white;
-        font-family: "Roboto";
-    }
-
-    /* The actual timeline (the vertical ruler) */
-    .timeline {
-        padding-top: 40px;
-        padding-bottom: 20px;
-        position: relative;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    /* The actual timeline (the vertical ruler) */
-    .timeline::after {
-        content: '';
-        position: absolute;
-        width: 6px;
-        background-color: black;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        margin-left: -3px;
-    }
-    /* The container that holds the actual content*/
-    .container {
-        padding: 10px 40px;
-        position: relative;
-        background-color: inherit;
-        width: 50%;
-    }
-
-    /* The nice App Inventor circles on the central line */
-    .container::after {
-        content: '';
-        position: absolute;
-        width: 25px;
-        height: 25px;
-        right: -17px;
-        background:url('../static/app_inventor.png') no-repeat center #FFF;
-        border: 4px solid #F78D35;
-        top: 15px;
-        border-radius: 50%;
-        z-index: 1;
-    }
-
-    /* Place the container with the data content to the left */
-    .left {
-        left: 0;
-    }
-
-    /* Place the container with the data content to the right */
-    .right {
-        left: 50%;
-    }
-
-    /* Arrows next to left container pointing right (into the timeline) */
-    .left::before {
-        content: " ";
-        height: 0;
-        position: absolute;
-        top: 22px;
-        width: 0;
-        z-index: 1;
-        right: 30px;
-        border: medium solid white;
-        border-width: 10px 0 10px 10px;
-        border-color: transparent transparent transparent #CBDCB4;
-    }
-
-    /* Arrows next to right container pointing left (into the timeline) */
-    .right::before {
-        content: " ";
-        height: 0;
-        position: absolute;
-        top: 22px;
-        width: 0;
-        z-index: 1;
-        left: 30px;
-        border: medium solid white;
-        border-width: 10px 10px 10px 0;
-        border-color: transparent #CBDCB4 transparent transparent;
-    }
-
-    /* Fix the circle for containers on the right side */
-    .right::after {
-        left: -16px;
-    }
-
-    /* The actual content */
-    .content {
-        padding: 10px;
-        text-align: center;
-        background-color: #CBDCB4;
-        position: relative;
-        border-radius: 6px;
-    }
-
-    @media all and (max-width: 600px) {
-      /* Place the timelime to the left */
-      .timeline::after {
-        left: 31px;
-      }
-      
-      /* Full-width containers */
-      .container {
-        width: 100%;
-        padding-left: 25px;
-        padding-right: 25px;
-      }
-      
-      /* Make sure that all arrows are pointing leftwards */
-      .container::before {
-        left: 60px;
-        border: medium solid white;
-        border-width: 10px 10px 10px 0;
-        border-color: transparent white transparent transparent;
-      }
-
-      /* Make sure all circles are at the same spot */
-      .left::after, .right::after {
-        left: 15px;
-      }
-      
-      /* Make all right containers behave like the left ones */
-      .right {
-        left: 0%;
-      }
-    }
-      .timeline-start {
-          display: table;
-          font-family: "Roboto";
-          font-size: 16px;
-          font-weight: 800;
-          text-transform: uppercase;
-          background: #FAFAFA;
-          padding: 10px 10px;
-          color: #000;
-          max-width: 10%;
-          width: 100%;
-          text-align: center;
-          margin: 0 auto;
-          margin-top: 20px;
-          border-radius: 6px;
-          border: 1px solid black;
-    }
-      .timeline-end {
-          display: table;
-          font-family: "Roboto";
-          font-size: 16px;
-          font-weight: 800;
-          text-transform: uppercase;
-          background: #FAFAFA;
-          padding: 10px 10px;
-          color: #000;
-          max-width: 10%;
-          width: 100%;
-          text-align: center;
-          margin: 0 auto;
-          border-radius: 6px;
-          border: 1px solid black;
-    }
-
-</style>
+<link rel="stylesheet" href="../static/cloud.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="../static/cloud.js"></script>
 </head>
-<body>
+<body onload="setupProjects(); setUpModal(); viewCurrentTags();createCloud();" onunload="">
 
 <!--<div class="container">-->
 
@@ -200,124 +21,138 @@
 <!-- Navigation Bar -->
 <div class="bar">
   <a href="http://ai2.appinventor.mit.edu/" class="bar-item">App Inventor</a>
-  <a href="index" class="bar-item">Log View</a>
-  <a href="cloud" class="bar-item">Cloud View</a>
+  <a href="index.html" class="bar-item">Log View</a>
+  <a href="cloud.html" class="bar-item">Cloud View</a>
+</div>
+<div class="project-selection">
+    <div class="dropdown" id="project">
+      <div style="clear: both" class="dropWrapper">
+        <h2 id = "title"><strong>Project ID:</strong></h2>
+        <button onclick="selectProject()" class="dropbtn" id="dropbtn">
+          ProjectID <i class="fa fa-sort-down" style="font-size:24px"></i>
+        </button>
+      </div>
+        <div id="projectDropdown" class="dropdown-content"></div>
+    </div>
+</div>
+<!--Modal pop-up to add new project ID-->
+<div id="projectModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <strong> ProjectID: </strong> 
+    <input type="text" name="ProjectID" id="newProject">
+  <button id="submit-button" onclick="addProject();"> Submit </button>
+  </div>
+</div>
+<div class="dropdown" id="currentValues">
+  <span onmouseover="viewCurrentTags();">Current Tags</span>
+  <div class="dropdown-content" id="content">
+    <div id="dropdownWrapper">
+      <div id="tags">
+      </div>
+      <div id="values">
+      </div>
+    </div>
+  </div>
 </div>
 
-<div id = "tstart" class="timeline-start">Start</div>
-<div id = "timeline" class="timeline"></div>
-<div id = "tend" class="timeline-end">End</div>
+<h2>History</h2>
 
-<pre id="out"></pre>
+<div id = "tstart" class="timeline-start">Most Recent</div>
+<div id = "timeline" class="timeline"></div>
+<div id = "tend" class="timeline-end">Least Recent</div>
 
 <p id="lastUpdated"></p>
-    <script type="text/javascript">
-        var source = new EventSource('/stream');
-        /*source.addEventListener('refresh', function(e) {
-            //$("#refresh").prepend(event.data + "<br>");
-            window.location.reload(true);
-        if (e.data == 'stream_end') { source.close() };
-        });*/
-        //var timeline = document.getElementById("timeline");
-        source.onmessage = function(e) {
-            window.location.reload(true);
-            /*if (e.data != "1"){
-
-            //var byteString = JSON.parse(e.data);
-            var newDiv = document.createElement("div");
-            if (timeline.lastChild.className == 'container right'){
-                newDiv.setAttribute('class', 'container left');
-                content = document.createElement("div");
-                content.setAttribute('class', 'content');
-                var p = document.createElement('p');
-                var header = document.createElement("h2");
-                //date2.setTime(logFile.updated);
-                //header.innerHTML = date2.toLocaleString("en-US", options);
-                //p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
-                header.innerHTML = timeline.lastChild.className;
-                p.innerHTML = e.data;
-                content.appendChild(header);
-                content.appendChild(p);
-                newDiv.appendChild(content);
-            }
-            else{
-                newDiv.setAttribute('class', 'container right');
-                content = document.createElement("div");
-                content.setAttribute('class', 'content');
-                var p = document.createElement('p');
-                var header = document.createElement("h2");
-                //date2.setTime(logFile.updated);
-                //header.innerHTML = date2.toLocaleString("en-US", options);
-                //p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
-                p.innerHTML = e.data;
-                header.innerHTML = timeline.lastChild.className;
-                content.appendChild(header);
-                content.appendChild(p);
-                newDiv.appendChild(content);
-            }
-            timeline.appendChild(newDiv);
-            }
-            //out.innerHTML =  e.data + out.innerHTML;
-            /*if (byteString === "refresh"){
-            window.location.reload();}*/
-            };
-    </script>
-    <script type="text/javascript">
-        var isLeft = true;
-        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
-        var options2 = {month: 'short', day: 'numeric', hour: 'numeric'}
-        /*var logFiles = [{"projectid":"Natalie@","tag":"High Score","value":12,"type":"Integer","updated":1489149847877}, 
-        {"projectid":"Natalie@","tag":"High Score","value":10,"type":"Integer","updated":1489143847222}, {"projectid":"Katherine@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}, {"projectid":"Jeff@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}];*/
-        var logFiles = {{ project_data | tojson }};
-        var timeline = document.getElementById("timeline");
-        var date = new Date();
-        document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date.toLocaleString("en-US", options);
-        logFiles.sort(function (a, b) {
-            return b.updated - a.updated;
-        });
-        date.setTime(logFiles[0].updated);
-        document.getElementById('tstart').innerHTML = date.toLocaleString("en-US", options2);
-        date.setTime(logFiles[logFiles.length - 1].updated);
-        document.getElementById('tend').innerHTML = date.toLocaleString("en-US", options2);
-
-        var date2 = new Date();
-        for (var i = 0; i < logFiles.length; i++) {
-            var logFile = logFiles[i];
-            var newDiv = document.createElement("div");
-            if (isLeft == true){
-                newDiv.setAttribute('class', 'container left');
-                content = document.createElement("div");
-                content.setAttribute('class', 'content');
-                var p = document.createElement('p');
-                var header = document.createElement("h2");
-                date2.setTime(logFile.updated);
-                header.innerHTML = date2.toLocaleString("en-US", options);
-                p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
-                content.appendChild(header);
-                content.appendChild(p);
-                newDiv.appendChild(content);
-                isLeft = false;
-            }
-            else{
-                newDiv.setAttribute('class', 'container right');
-                content = document.createElement("div");
-                content.setAttribute('class', 'content');
-                var p = document.createElement('p');
-                var header = document.createElement("h2");
-                date2.setTime(logFile.updated);
-                header.innerHTML = date2.toLocaleString("en-US", options);
-                p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
-                content.appendChild(header);
-                content.appendChild(p);
-                newDiv.appendChild(content);
-                isLeft = true;
-            }
-            //newDiv.outerHTML = logFiles.projectid.toString() + logFiles.updated.toString();
-            timeline.appendChild(newDiv);
-        };
-    </script>
 
 </div>
+<script type="text/javascript">
+var tags = {};
+function createCloudFromEventStream(e){
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+  if (e.data != "1"){
+    var dataList = JSON.parse(e.data);
+    var date = new Date();
+    var timeline = document.getElementById("timeline");
+    var newDiv = document.createElement("div");
+    document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date.toLocaleString("en-US", options);
+    tags[dataList.tag.toString()] = dataList.value.toString();
+    sessionStorage.setItem("tags", JSON.stringify(tags));
+    if (timeline.childElementCount > 0 && timeline.firstChild.className == 'container right'){
+        newDiv.setAttribute('class', 'container left');
+    }
+    else{
+        newDiv.setAttribute('class', 'container right');
+    }
+    var content = document.createElement("div");
+        content.setAttribute('class', 'content');
+        var p = document.createElement('p');
+        var header = document.createElement("h5");
+        p.innerHTML = "Tag (Description): " + "<strong> " + dataList.tag.toString() + "</strong>"+ ", Value (Data): " + dataList.value.toString() + ", Type: " +dataList.type.toString();
+        date.setTime(dataList.updated);
+        header.innerHTML = date.toLocaleString("en-US", options);
+        content.appendChild(header);
+        content.appendChild(p);
+        newDiv.appendChild(content);
+    timeline.insertBefore(newDiv, timeline.firstChild);
+  }
 
+}
+var source = new EventSource('/stream');
+/*source.addEventListener('refresh', function(e) {
+    //$("#refresh").prepend(event.data + "<br>");
+    window.location.reload(true);
+    if (e.data == 'stream_end') { source.close() };
+});*/
+source.onmessage = function(e) {
+    createCloudFromEventStream(e);
+};
+function closeStream(){
+  source.close();
+}
+
+function createCloud(){
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+    var options2 = {month: 'short', day: 'numeric', hour: 'numeric'};
+    var logFiles = {{ project_data | tojson }};
+    var timeline = document.getElementById("timeline");
+    var date = new Date();
+    document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date.toLocaleString("en-US", options);
+    logFiles.sort(function (a, b) {
+        return b.updated - a.updated;
+    });
+    date.setTime(logFiles[0].updated);
+    document.getElementById('tstart').innerHTML = date.toLocaleString("en-US", options2);
+    date.setTime(logFiles[logFiles.length - 1].updated);
+    document.getElementById('tend').innerHTML = date.toLocaleString("en-US", options2);
+
+    var date2 = new Date();
+    for (var i = 0; i < logFiles.length; i++) {
+        var logFile = logFiles[i];
+        var newDiv = document.createElement("div");
+        if (timeline.childElementCount > 0 && timeline.firstChild.className == 'container right'){
+            newDiv.setAttribute('class', 'container left');
+        }
+        else{
+            newDiv.setAttribute('class', 'container right');
+        }
+            content = document.createElement("div");
+            content.setAttribute('class', 'content');
+            var p = document.createElement('p');
+            var header = document.createElement("h5");
+            date2.setTime(logFile.updated);
+            header.innerHTML = date2.toLocaleString("en-US", options);
+            //p.innerHTML = "Project ID: " + logFile.projectid.toString() + ", Tag: " + logFile.tag.toString() + ", Value: " + logFile.value.toString() + "\n" + ", Type: " + logFile.type.toString();
+            p.innerHTML = "Tag (Description): " + "<strong> " + logFile.tag.toString() + "</strong>"+", Value (Data): [" + logFile.value.toString() + "], Type: " + logFile.type.toString();
+            content.appendChild(header);
+            content.appendChild(p);
+            newDiv.appendChild(content);
+        timeline.appendChild(newDiv);
+    };
+  }
+window.onunload = closeStream;
+
+</script>
 </body>
 </html>
+

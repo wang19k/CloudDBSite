@@ -4,56 +4,19 @@
     <title>CloudDB Log</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<link rel="stylesheet" href="../static/cloud-style.css">-->
+    <link rel="stylesheet" href="../static/log.css">
+    <script src="../static/log.js"></script>
     <!--<meta http-equiv="refresh" content="10">-->
-    <style type="text/css">
-    	html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
-		html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}
-		.bar {
-	        border: 1px solid gray;
-	        text-align: center;
-	        background-color: #F2F2F2;
-    	}
-		article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}
-		button,input,select,textarea{font:inherit;margin:0}optgroup{font-weight:bold}
-		hr{border:0;border-top:1px solid #eee;margin:20px 0}
-		html,h1,h2,h3,h5 {font-family: "Roboto";}
-		h4 {font-family: "Roboto"; font-size: 140%; font-style: bold; margin: 1; padding-right: 1em;}
-		div.container {width: 100%; border: 1px solid gray;}
-		div.tab {float: left; border: 1px solid #ccc; background-color: #f1f1f1; width: 20%; height: 600px; }
-		div.tab button { display: block;background-color: inherit;color: black; padding: 22px 16px; width: 100%; border: none; outline: none; text-align: left; cursor: pointer;transition: 0.3s;}
-		/*Hovering above tab*/
-		div.tab button:hover {background-color: #ddd;}
-		/* Active Tab*/
-		div.tab button.active {background-color: #ccc;}
-		.tabcontent {float: left; padding: 0px 12px; width: 80%; border-left: none; height: 80vh;}
-		header { padding: 1em; color: black; background-color: #A4CE47; clear: left; text-align: center;}
-		nav { float: left; max-width: 200px; margin: 1; padding: 1em;}
-		nav ul { list-style-type: none; padding: 0; }
-		nav ul a {text-decoration: none;}
-		a { text-decoration: none; font-size: 125%; padding-right: 1em; padding-left: 2em; color: #000000;}       
-		article {margin-left: 170px; border-left: 1px solid gray; padding: 1em; overflow: hidden;}
-		body{ font-family: "Roboto";}
-		table { border-collapse: collapse; }
-		td, th { border: 1px solid lightgray; padding: 3px 7px 2px 7px;}
-		th{text-align: left; padding-top: 5px; padding-bottom: 4px; background-color: Gray; color: #ffffff;}
-		td.stderr {color: Red;}
-        #lastUpdated{
-            border:none;
-            font-size: 2vw;
-            text-align: center;
-        }
-    </style>
 </head>
-<body>
+<body onload="sse();">
 <header>
    <h1>CloudDB Log Page</h1>
 </header>
 <!-- Navigation Bar -->
 <div class="bar">
   <a href="http://ai2.appinventor.mit.edu/" class="bar-item">App Inventor</a>
-  <a href="index" class="bar-item">Log View</a>
-  <a href="cloud" class="bar-item">Cloud View</a>
+  <a href="index.html" class="bar-item">Log View</a>
+  <a href="cloud.html" class="bar-item">Cloud View</a>
 </div>
 
 <div class="container" id="container">
@@ -67,114 +30,5 @@
 </div>
 <!--<div id="lastUpdated">Filler</div>-->
 <!--<button id="refresh" onclick="refresh()">Reload Page</button>-->
-<!--<script type="text/javascript" src="../static/tableFormation.js"></script>-->
-
-<script type="text/javascript">
-    var seen = new Set();
-    var source = new EventSource('/stream');
-    source.onmessage = function(evt) {
-        e = JSON.parse(evt.data);
-        //window.location.reload(true);
-        if (seen.has(e.projectid)){
-            var dataLogTable = document.getElementById("logTable" + e.projectid);
-            date.setTime(e.updated);
-            var row = dataLogTable.insertRow(-1);
-            var tagColumn = row.insertCell(0);
-            tagColumn.innerHTML = e.tag;
-            var valueColumn = row.insertCell(1);
-            valueColumn.innerHTML = e.value.toString();
-            var typeColumn = row.insertCell(2);
-            typeColumn.innerHTML = e.type;
-            var dateColumn = row.insertCell(3);
-            dateColumn.innerHTML = date.toLocaleString("en-US", options);
-        }
-        else{
-        window.location.reload(true);
-        }
-    };
-    function openIDTable(evt, projectIDName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(projectIDName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
-
-    // Get the element with id="defaultOpen" and click on it
-    document.getElementById("defaultOpen").click();
-    function refresh(){
-    	window.location.reload(true);
-    }
-
-	var logFiles = {{ project_data | tojson }};
-
-	/*var logFiles = [{"projectid":"Natalie@","tag":"High Score","value":12,"type":"Integer","updated":1489149847877}, 
-    {"projectid":"Natalie@","tag":"High Score","value":10,"type":"Integer","updated":1489143847222}, {"projectid":"Katherine@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}, {"projectid":"Jeff@","tag":"Money Spent","value":179,"type":"Integer","updated":1489153847222}];*/
-    var tabs = document.getElementById("dynamic");
-    // run through to set up and create all the tabs and tables
-    for (var i = 0; i < logFiles.length; i++) {
-        var logFile = logFiles[i];
-        var currentid = logFile.projectid;
-        if (!seen.has(currentid)){
-            var button = document.createElement('button');
-            button.setAttribute('class', 'tablinks');
-            button.setAttribute('onclick', "openIDTable(event, \'"+currentid+"\')");
-            button.innerHTML = currentid;
-            tabs.appendChild(button);
-
-            var newDiv = document.createElement("div");
-            newDiv.id = currentid;
-            newDiv.setAttribute('class', 'tabcontent');
-            // This is so it doesn't show the table data by default
-            newDiv.setAttribute('style', "display: none;")
-            newDiv.innerHTML = "<h1 id=\"logHeader\" style=\"font-size:160%;\"><b>Log Table for ID: "+ currentid +"</b></h1>";
-
-            var table = document.createElement("table");
-            table.id = "logTable" + currentid;
-            var row = table.insertRow(0);
-                row.insertCell(0).outerHTML = "<th>Tag</th>";
-                row.insertCell(1).outerHTML = "<th>Value</th>";
-                row.insertCell(2).outerHTML = "<th>Type</th>";
-                row.insertCell(3).outerHTML = "<th>Last Accessed</th>";
-            newDiv.appendChild(table);
-            //var refreshButton = document.createElement('button');
-        	//refreshButton.setAttribute('onclick', "refreshBlock()");
-        	//refreshButton.innerHTML = "Page location is " + window.location.href;
-        	//function refreshBlock()
-        	//{$('#' + currentid).load("/store #" + currentid);}
-        	//newDiv.appendChild(refreshButton);
-            document.getElementById("container").appendChild(newDiv);
-            seen.add(currentid);}
-    }
-    var date = new Date();
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
-    //document.getElementById('lastUpdated').innerHTML = 'Log was last updated ' + date.toLocaleString("en-US", options);
-    // Most recent to least recent
-    logFiles.sort(function (a, b) {
-        return b.updated - a.updated;
-    });
-    //document.getElementById("logHeader").innerHTML = 'Log Table for ' + logFiles[0].projectid;
-    // Sets the tables within each of the tabs
-    for (var i = 0; i < logFiles.length; i++) {
-        var logFile = logFiles[i];
-        var dataLogTable = document.getElementById("logTable" + logFile.projectid);
-        date.setTime(logFile.updated);
-        var row = dataLogTable.insertRow(-1);
-        var tagColumn = row.insertCell(0);
-        tagColumn.innerHTML = logFile.tag;
-        var valueColumn = row.insertCell(1);
-        valueColumn.innerHTML = logFile.value.toString();
-        var typeColumn = row.insertCell(2);
-        typeColumn.innerHTML = logFile.type;
-        var dateColumn = row.insertCell(3);
-        dateColumn.innerHTML = date.toLocaleString("en-US", options);
-    }
-</script>
 </body>
 </html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cloud Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../static/login.css">
+<script src="../static/login.js"></script>
+</head>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<body>
+
+<!--<div class="container">-->
+
+<header>
+   <h1>CloudDB Log Page</h1>
+</header>
+
+
+
+<!-- Navigation Bar -->
+<div class="bar">
+  <a href="http://ai2.appinventor.mit.edu/" class="bar-item">App Inventor</a>
+</div>
+<div class="limiter">
+	<div class="formContainer">
+		<div class="wrapper">
+			<form action="" method="post">
+			  <span class="form-title">Provide Token & Project ID</span>
+			  <div class="inputWrapper">
+				  <input class="typedInput" type="text" name="token" id="token" placeholder="Token From App Inventor">
+				  <span class="focus"></span>
+			   </div>
+			   <div class="inputWrapper">
+				  <input class="typedInput" type="text" name="projectid" id="projectid" placeholder="Project ID">
+				  <span class="focus"></span>
+			   </div>
+			   <div class="checkWrapper">
+			   		<label class="container">Log Version
+						  <input class="defaultCheck" type="checkbox" name="next" value="/">
+						  <span class="checkmark"></span>
+					</label>
+					<label class="container">Cloud Version
+						  <input class="defaultCheck" type="checkbox" name="next" value="/cloud">
+						  <span class="checkmark"></span>
+					</label>
+				</div>
+
+
+			  <!--<input type="checkbox" name="next" value="/"> Log Version<br>
+			  <input type="checkbox" name="next" value="/cloud"> Cloud Version<br>-->
+			  <input onclick="submitProject()" class="submitButton" type="submit" value="Submit">
+			</form>
+		</div>
+	</div>
+</div>
